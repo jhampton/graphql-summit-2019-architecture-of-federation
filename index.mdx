@@ -1,0 +1,297 @@
+import highlight from '@mdx-deck/themes/syntax-highlighter-prism'
+import { Invert, Split, SplitRight, FullScreenCode, Horizontal } from 'mdx-deck'
+import { Appear, Head, Notes } from 'mdx-deck'
+import { summit } from './theme.js'
+
+
+export const themes = [
+  highlight,
+  summit
+]
+
+
+# The Architecture of Federation
+
+---
+
+# Welcome
+
+## I'm Jeff Hampton, Solutions Architect @ Apollo
+
+* 20+ years
+* Corporate IT, SQL DBA, Microsoft
+* Web, Full-stack
+* I like things that work
+
+_@jhampton (twitter, github)_
+
+---
+
+# Great Year for Apollo
+
+## One of the best things to come out is Federation
+     
+* Sparked conversations, wide adoption
+* Language Support (show graphics)
+    * Java, JS/ TS, Ruby, Python, .NET
+
+---
+
+# A Talk in 3 Parts
+
+## Foundation
+
+## Implementation
+
+## Demonstration
+
+<Notes>
+    We're going to build a simple graph that has products, reviews, and accounts.  We're going to separate the graph by concern.
+</Notes>
+
+---
+
+<Invert>
+
+# Foundation
+
+</Invert>
+
+---
+
+# Why Federation?
+
+---
+
+# FRAME THE PROBLEM
+
+* Decoupling, no more monoliths
+* Implementation in parts, that's how we work
+* We heard this from teams, not confident they could scale
+
+---
+
+# DOES THIS APPLY TO ME?
+
+* Do you want modular portions of your graph?
+* Do you have separate GraphQL services today?
+* Do different parts of your graph have different security requirements?
+* Do different parts of your graph have different performance requirements?
+* Different deployment cadences?
+
+Consider that ...
+
+* Adoption is incremental.
+* Implementation is simple.
+* Provides a clear path to scale.
+
+---
+
+# Principled Implementation
+
+> "Instead of implementing an organization's entire data graph layer in a single codebase, responsibility for defining and implementing the graph should be divided across multiple teams. Each team should be responsible for maintaining the portion of the schema that exposes their data and services, while having the flexibility to develop independently and operate on their own release cycle."
+
+_from [PrincipledGraphql.com](https://principledgraphql.com/integrity#2-federated-implementation) by Matt DeBergalis and Geoff Schmidt_
+
+---
+
+<Appear>
+
+## Declarative
+
+## Separates Concerns
+
+## Just GraphQL
+
+_from ["Apollo Federation"](https://blog.apollographql.com/apollo-federation-f260cf525d21) by James Baxley III_
+
+</Appear>
+
+---
+
+# Federation is Declarative
+
+* GraphQL Syntax
+* Static composition & validation
+* No code - supported today
+* Benefit from ahead-of-time validation, composition, analysis
+
+---
+
+# Federation Separates Concerns
+
+Separates:
+
+* Teams' responsibilities
+* Logic in Services, not the Gateway
+* Code organization vs infra
+
+
+---
+
+# Just GraphQL
+
+* Uses SDL primitives 
+* Opaque to consumers
+* Implementation language-agnostic
+
+<Notes>
+To a consumer, this is a single graph.  Spec-compliant.  Transparent rollout, no client changes.
+</Notes>
+
+---
+
+# Summary of the summary 
+
+---
+
+# What is Federation?
+
+---
+
+A declarative model for Graph composition _of_
+
+loosely coupled downstream GraphQL services _that enables_
+
+static composition and validation _of a unified graph, using_
+
+query plans to resolve downstream operations.
+
+---
+
+<Invert>
+
+# Implementation
+
+Core building blocks of Federation
+
+</Invert>
+
+
+---
+
+First, we need an entity
+
+---
+
+Show the JSON object of the representation of a User type
+
+_entity, etc
+
+---
+
+# 2 things make it all work
+
+1. _Reference_ an entity defined in another service (Extend type ... @external), this is the information we need to find, reference, and request that entity.
+1. _Extend_ an entity within my service.  The Reviews service is concerned with providing its own rich information to all consumers, by extending the User type with the list of reviews.  Just as any service can extend any type, we EXTEND the root query type
+
+---
+
+# Entities - Separate Slide
+
+
+
+<Split>
+
+> [An entity is a type that can be referenced by another service.](https://www.apollographql.com/docs/apollo-server/federation/core-concepts/#entities-and-keys) Entities, once declared in a service, can be *extended* by other services, statically *validated and composed*, and *resolved* by the query planner.
+
+
+```graphql
+# Accounts Service
+type User @key(fields: "id") {
+  id: ID!
+  name: String
+  username: String
+}
+```
+
+</Split>
+
+<Notes>
+@key promotes a type to an entity.  It's a type that is a referencable object in the graph. If you have the key, you can get the whole entity.
+</Notes>
+
+---
+
+# Extension
+
+```graphql
+## Reviews service
+type Review @key(fields: "id") {
+  id: ID!
+  body: String
+  author: User
+  product: Product
+}
+
+extend type User @key(fields: "id") {
+  id: ID! @external
+  username: String @external
+  reviews: [Review]
+}
+```
+
+---
+
+<Invert>
+
+# Demonstration
+
+</Invert>
+
+---
+
+* Playground
+    * Show query plan (ID is used to fetch that entity!)
+    * Extend, Push
+    * New Query
+    * Show query plan
+    * Add provides
+    * Execute queries
+    * Show AGM
+
+---
+# SHOW COMPOSED schema
+
+--- 
+
+# Composition and Validation
+
+```graphql
+// Reviews service
+type Review @key(fields: "id") {
+  id: ID!
+  body: String
+  author: User @provides(fields: "username")
+  product: Product
+}
+
+extend type User @key(fields: "id") {
+  id: ID! @external
+  # Let's change the username!
+  username: Boolean @external
+  reviews: [Review]
+}
+```
+
+---
+
+# Advanced Topics
+
+## Keys
+- Multiple Keys
+- Compound Keys
+
+## @PROVIDES
+
+---
+
+Demo beats
+
+* Simple
+* Show that we can use the individual service!  It's "Just GraphQL"
+* Show ID Representation
+* Extend
+* Show plan
+* Add key
+* Add provides

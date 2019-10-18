@@ -1,0 +1,20 @@
+{
+  "name": "summit-2019-federation-talk",
+  "version": "0.1.0",
+  "description": "Apollo Federation brought a new architecture to GraphQL and a new way of thinking about how to design and build a schema, but what does it mean for how your team builds a data graph? In this talk you will learn about the architectural principles behind federation and see how you can implement a well designed and structured data graph using Apollo",
+  "main": "index.js",
+  "scripts": {
+    "start": "mdx-deck index.mdx",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Jeff Hampton",
+  "license": "MIT",
+  "devDependencies": {
+    "@mdx-deck/themes": "^3.0.8",
+    "mdx-deck": "^3.0.13",
+    "styled-components": "^4.4.0",
+    "react-helmet": "^5.2.1",
+    "typescript": "^3.6.4"
+  },
+  "dependencies": {}
+}
