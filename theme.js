@@ -1,7 +1,7 @@
-import { condensed } from '@mdx-deck/themes'
+import { future as baseTheme } from '@mdx-deck/themes'
 
 export const summit = {
-    ...condensed,
+    ...baseTheme,
     prism: {
         graphQL: {
             fontSize: '12px',   

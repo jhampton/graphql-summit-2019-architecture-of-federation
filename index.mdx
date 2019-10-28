@@ -20,10 +20,17 @@ export const themes = [
 
 * 20+ years
 * Corporate IT, SQL DBA, Microsoft
-* Web, Full-stack
+* Web, React Native
+* Patterns, SOLID, Architecture
 * I like things that work
 
 _@jhampton (twitter, github)_
+
+<Notes>
+  Hello everyone, I'm Jeff Hampton.  I recently joined Apollo as a solutions architect. My career winds through corporate IT where I slept with a BlackBerry strapped to my underwear, through PHP4 and various web tech, and finally more native-focused tech and working on patterns and architecture.
+
+  I like things that work.  I don't have a personal brand.  You can occasionally find me on Twitter, but more regularly on GitHub.
+</Notes>
 
 ---
 
@@ -35,25 +42,50 @@ _@jhampton (twitter, github)_
 * Language Support (show graphics)
     * Java, JS/ TS, Ruby, Python, .NET
 
+<Notes>
+  It's been a great year for Apollo  
+</Notes>
+
 ---
 
 # A Talk in 3 Parts
 
-## Foundation
+<Appear> 
+
+## Motivation
+
+* Why Federation?
+* What does is solve?
 
 ## Implementation
 
-## Demonstration
+* Entities, Value Types, and Services
+* Syntax and Reasoning
+
+## Build It
+
+* Ecommerce Demo
+* Build the services
+
+</Appear>
 
 <Notes>
-    We're going to build a simple graph that has products, reviews, and accounts.  We're going to separate the graph by concern.
+
+    First let's walk through the challenges that Federation addresses.  Next we'll look at how Federation is implemented, and then quickly move into building a Federated graph. Our demo will be an ecommerce graph that has products, reviews, and accounts.  We're going to separate the graph by concern into individual services and extend those services, seeing how that affects
+
 </Notes>
+
+---
+
+# Part 1
 
 ---
 
 <Invert>
 
-# Foundation
+# Motivation
+
+Framing the problem
 
 </Invert>
 
@@ -63,37 +95,126 @@ _@jhampton (twitter, github)_
 
 ---
 
-# FRAME THE PROBLEM
+# Challenges
 
-* Decoupling, no more monoliths
-* Implementation in parts, that's how we work
-* We heard this from teams, not confident they could scale
+<Appear>
+
+Decoupling, no more monoliths at scale
+
+What about stitching?
+
+Implementation in parts, separate concerns
+
+We heard this from teams, not confident they could scale
+
+</Appear>
+
+<Notes>
+
+
+  Once teams see the power of GraphQL is that it's awesome.  As teams place more into graph,
+  hard to scale.
+
+  The power of monoliths...TK
+
+  Previously, the solution was schema stitching.  It allows for multiple services to be composed into a single graph. TK  Provide more color around 
+
+  Apollo heard a consistent message from our community: GraphQL at scale can become a monolith.  
+  
+  While stitching addresses some of the problem, it's a leaky abstraction, placing logic into the gateway.
+
+  Like the underlying services, implementation should be in parts. You should separate concerns on organizational or technical lines.  Maybe you have alower-moving portions of your schema, or geographically-distributed teams that want to move quickly.
+
+  We heard about these kinds of challeneges, but perhaps you're wondering...
+
+</Notes>
 
 ---
 
 # DOES THIS APPLY TO ME?
 
-* Do you want modular portions of your graph?
+<Appear>
+
+Do you ...
+
 * Do you have separate GraphQL services today?
-* Do different parts of your graph have different security requirements?
-* Do different parts of your graph have different performance requirements?
-* Different deployment cadences?
+* Do you want modular portions of your graph?
+* Do features have different security requirements?
+* Do features have different performance requirements?
+* Do you have different deployment cadences?
 
-Consider that ...
+</Appear>
 
-* Adoption is incremental.
-* Implementation is simple.
-* Provides a clear path to scale.
+<Notes>
+
+  Is this just hype
+
+  Adoption is simple and follows same basic rules defined in the Federation specification.  Your current server likely has support, and investing today decreases risk during scaling events.
+
+  POLL THE AUDIENCE - Get them involved
+
+  - Modularity
+  - Separate GraphQL Services today?
+  - KEEP YOUR HANDS RAISED
+
+  So these are some of the questions you might think about when approaching a federated graph.  We believe there is immediate value and a greater chance of long-term success in adopting federation TODAY.
+
+  Federation is for you.  We want something we can adopt incrementally...
+
+</Notes>
+
+---
+
+# Adoption Requirements
+
+* Adoption is incremental
+* Implementation is simple
+* Wide support
+* Provides a clear path to scale
+
+<Notes>
+  Given what we heard, here's what inspired us to build Federation...TK
+  
+  Listened to the needs of our customers...
+
+  We talked to all these people...
+
+  We strive to deliver the most thoughtful and useful tools, so we took the myriad conversations from our community, TK
+
+  We took what we heard... TK
+
+</Notes>
+
+
+---
+
+<Invert>
+
+# Why _This_ Federation Standard?
+
+</Invert>
 
 ---
 
 # Principled Implementation
 
+<Appear>
+
 > "Instead of implementing an organization's entire data graph layer in a single codebase, responsibility for defining and implementing the graph should be divided across multiple teams. Each team should be responsible for maintaining the portion of the schema that exposes their data and services, while having the flexibility to develop independently and operate on their own release cycle."
 
 _from [PrincipledGraphql.com](https://principledgraphql.com/integrity#2-federated-implementation) by Matt DeBergalis and Geoff Schmidt_
 
+</Appear>
+
+<Notes>
+  
+  In "Principled GraphQL", Matt and Geoff describe a disciplined approach to GraphQL implementation: a single graph whose pieces can implemented independently.
+
+</Notes>
+
 ---
+
+# Characteristics of Federation
 
 <Appear>
 
@@ -113,8 +234,12 @@ _from ["Apollo Federation"](https://blog.apollographql.com/apollo-federation-f26
 
 * GraphQL Syntax
 * Static composition & validation
-* No code - supported today
+* Supported today
 * Benefit from ahead-of-time validation, composition, analysis
+
+<Notes>
+  We wanted to be able to design something as declarative and intuitive as writing...well...GraphQL.
+</Notes>
 
 ---
 
@@ -126,6 +251,9 @@ Separates:
 * Logic in Services, not the Gateway
 * Code organization vs infra
 
+<Notes>
+  TK This over that, this vs that
+</Notes>
 
 ---
 
@@ -136,18 +264,18 @@ Separates:
 * Implementation language-agnostic
 
 <Notes>
+
 To a consumer, this is a single graph.  Spec-compliant.  Transparent rollout, no client changes.
+
 </Notes>
-
----
-
-# Summary of the summary 
 
 ---
 
 # What is Federation?
 
 ---
+
+# REWORK - EXPLAIN TO A 6yo
 
 A declarative model for Graph composition _of_
 
@@ -159,6 +287,10 @@ query plans to resolve downstream operations.
 
 ---
 
+# Part 2
+
+---
+
 <Invert>
 
 # Implementation
@@ -167,37 +299,48 @@ Core building blocks of Federation
 
 </Invert>
 
+---
+
+# For This Example
+
+## Diagram
+
+Ecommerce schema
+
+Accounts Service
+
+Reviews Service
+
+Products Service
+
+Books Service
+
+<Notes>
+  For the rest of the talk, we're going to use a schema for a fictional ecommerce company that defines some basic entities across several services.  Now, let's walk through what we need to make Federation work for US.
+
+  Talk about the services TK
+</Notes>
 
 ---
 
-First, we need an entity
+# Two Main Features
+
+1. _Reference_ - type defined in another service
+1. _Extend_ - query, types
+
+<Notes>
+  In order to implement Federation, we need two main features:
+  
+  1. The ability to reference types across services and
+  2. The ability to add richness to types across services
+</Notes>
 
 ---
 
-Show the JSON object of the representation of a User type
-
-_entity, etc
-
----
-
-# 2 things make it all work
-
-1. _Reference_ an entity defined in another service (Extend type ... @external), this is the information we need to find, reference, and request that entity.
-1. _Extend_ an entity within my service.  The Reviews service is concerned with providing its own rich information to all consumers, by extending the User type with the list of reviews.  Just as any service can extend any type, we EXTEND the root query type
-
----
-
-# Entities - Separate Slide
-
-
-
-<Split>
-
-> [An entity is a type that can be referenced by another service.](https://www.apollographql.com/docs/apollo-server/federation/core-concepts/#entities-and-keys) Entities, once declared in a service, can be *extended* by other services, statically *validated and composed*, and *resolved* by the query planner.
-
+# 1. We Need An "Entity"
 
 ```graphql
-# Accounts Service
+"In the Accounts service, the base User"
 type User @key(fields: "id") {
   id: ID!
   name: String
@@ -205,31 +348,51 @@ type User @key(fields: "id") {
 }
 ```
 
-</Split>
-
 <Notes>
-@key promotes a type to an entity.  It's a type that is a referencable object in the graph. If you have the key, you can get the whole entity.
+  TK An entity is a technical term, but the concept is simple: it's a type that we can reference from another service.  The @key directive...referenced in another service.
+
+  We need the ability to reference a given type, defined in one service, from another service.  To those familiar with database design, this should look vaguely familiar.  We use the Key directive to indicate how we will reference this type across services.  Using this directive, we have promoted a simple "value type" into an entity.
+
+  It's worth noting that in federation today, only ONE service may define an entity that can be extended by other services.
+
+  Now that we have a way to reference an entity, we need a way to enrich that entity from another service: we need to EXTEND.
+
+  TK We need to add reviews...
+
+  TK Remove references to the query planner
 </Notes>
 
 ---
 
-# Extension
+# 2. Syntax To Extend Entities
 
 ```graphql
-## Reviews service
-type Review @key(fields: "id") {
-  id: ID!
-  body: String
-  author: User
-  product: Product
-}
-
+"In Reviews service, add reviews to User entity"
 extend type User @key(fields: "id") {
   id: ID! @external
   username: String @external
+  "A list of all reviews by the user"
   reviews: [Review]
 }
 ```
+
+<Notes>
+  The syntax for extending entities is simple and follows some basic rules: 
+
+  We use the extend keyword to indicate that we are extending a previously-defined entity
+  
+  We match the key signature so that the type is consistent and validates correctly
+  
+  And now we mark a couple of fields as "EXTERNAL", which means that these fields are provided in the defining service for this entity.  
+  
+  They're not resolved here.  The query planner will be able to find those fields on the defined entity service.
+
+  Whew.  Okay, we're extending this thing, so what did we add?  This is the Reviews service, so we added Reviews to the User.  Now, our consumers can quickly discover and use Reviews from the User entity.  From their perspective, it's a single graph.
+</Notes>
+
+---
+
+# Part 3
 
 ---
 
@@ -237,10 +400,41 @@ extend type User @key(fields: "id") {
 
 # Demonstration
 
+Let's build a Federated graph
+
 </Invert>
 
 ---
 
+# Service Relationship
+
+## TODO GRAPHIC
+
+---
+
+# Accounts
+
+```graphql
+"""
+  The base User
+"""
+type User @key(fields: "id") {
+  "A globally unique id for the user"
+  id: ID!
+  "The users full name as provided"
+  name: String
+  "The account username of the user"
+  username: String
+}
+```
+
+<Notes>
+  Examine the User Entity
+
+  View the result in PlayGround
+</Notes>
+
+---
 * Playground
     * Show query plan (ID is used to fetch that entity!)
     * Extend, Push
@@ -251,11 +445,8 @@ extend type User @key(fields: "id") {
     * Show AGM
 
 ---
-# SHOW COMPOSED schema
 
---- 
-
-# Composition and Validation
+# Reviews
 
 ```graphql
 // Reviews service
@@ -290,8 +481,9 @@ Demo beats
 
 * Simple
 * Show that we can use the individual service!  It's "Just GraphQL"
-* Show ID Representation
-* Extend
-* Show plan
-* Add key
-* Add provides
+  * Show Account Service
+  * Showing the Review Service
+  * CONNECT THEM
+  * Show the query plan
+* What about connecting to a public API?
+  * Show the query plan
